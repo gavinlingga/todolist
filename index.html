@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Apa itu array?</title>
+		<!-- <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'> -->
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+	</head>
+	<body>
+		
+		<div class="container">
+			<p>
+				<label for="new-task">Add Item</label><input id="input-todo" type="text"><button id="add-button">Add</button>
+			</p>
+			
+			<h3>Todo</h3>
+			<ul id="list">
+				<li><input type="checkbox"><label></label><input type="text"><button class="edit">Edit</button><button class="delete">Delete</button></li>
+				<li class="editMode"><input type="checkbox"><label>Go Shopping</label><input type="text" value="Go Shopping"><button class="edit">Edit</button><button class="delete">Delete</button></li>
+				
+			</ul>
+		</div>
+
+		<!-- <h3>Todo-list</h3>
+		<ul id="list">
+		</ul>
+		<input id="input-todo" placeholder="">
+		<button id="add-button" type="submit">Add</button> -->
+		
+		<script>
+			let todos = [];
+			const listDOM = document.getElementById('list');
+			const inputDOM = document.getElementById('input-todo');
+			const addDOM = document.getElementById('add-button');
+			const data = JSON.parse(localStorage.getItem('todos'));
+			if(data != null){
+				todos = data;
+			}
+			function render(){
+				let index = 0;
+				listDOM.innerHTML = "";
+				while(index < todos.length){
+					console.log(index)
+					if(todos[index].status == true){
+					listDOM.innerHTML +='<li><input checked onchange="statusBerubah('+index+')" type="checkbox"><strike>'+ todos[index].nama +'</strike><button onclick="hapus('+index+')">Delete</button></li>';
+					}else{
+						listDOM.innerHTML +='<li><input onchange="statusBerubah('+index+')" type="checkbox">'+ todos[index].nama +'<button onclick="hapus('+index+')">Delete</button></li>';
+					}
+					
+					index = index + 1
+				}
+			}
+			render();
+			addDOM.addEventListener('click', function(){
+				const todo = {
+					nama:inputDOM.value,
+					status:false
+				}
+				todos.push(todo)
+				console.log(todos)
+				render();
+				localStorage.setItem('todos', JSON.stringify(todos));
+			});
+			function hapus(p){
+				todos.splice(p, 1)
+				render();
+				localStorage.setItem('todos', JSON.stringify(todos));
+			}
+
+			function statusBerubah(index){
+				console.log(index);
+				if(todos[index].status == true){
+					todos[index].status = false
+				}else{
+					todos[index].status = true
+				}
+				render();
+				localStorage.setItem('todos', JSON.stringify(todos));
+			}
+			
+		</script>
+	</body>
+</html>
